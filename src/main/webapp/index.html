@@ -1,0 +1,76 @@
+
+<html>
+  <head>
+  <head>
+    <title>Playlist Generator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap -->
+    <link href="stylesheets/bootstrap.css" rel="stylesheet" media="screen">
+    <link href="stylesheets/main.css" rel="stylesheet">
+    <link href="stylesheets/select2.css" rel="stylesheet"/>
+  </head>
+
+  <body>
+ <!-- JavaScript plugins (requires jQuery) -->
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.js"></script>
+    <script src="js/select2.min.js"></script>
+    
+    <script>
+        $(document).ready(function() { 
+        	$("#venue").select2({placeholder: "Select a venue"});
+            $("#month").select2({placeholder: "Select a month"});
+            
+            $("#playlistForm").submit(function() {
+            	$("#goFind").text("Creating playlist...");
+            	
+            	 $.get('GetProgressServlet', function(responseText) { // Execute Ajax GET request on URL of "someservlet" and execute the following function with Ajax response text...
+                     $('#progressStatus').text(responseText);         // Locate HTML DOM element with ID "somediv" and set its text content with the response text.
+                 })
+                .done(function() { console.log( "success" ); })
+				.fail(function() { console.log( "error" ); })
+				.always(function() { console.log( "complete" ); });
+            });
+        });
+        
+
+    </script>
+    
+	<div class="container">
+	
+	<form id="playlistForm" class="form-signin" action="/find" method="post">
+		<h2 class="form-signin-heading">Select a Venue</h2>
+		
+       <select name="venue" id="venue" multiple="multiple" style="width:300px" class="populate placeholder select2-offscreen" tabindex="-1">
+        	<optgroup label="Galway">
+	        	<option></option>
+	        	<option value="roisindubh">The Roisin Dubh</option>
+	        	<option value="monroes">Monroe's</option>
+	        	<option value="townhall">Town Hall Theatre</option>
+        	</optgroup>
+        </select>
+
+       <select name="month" id="month" multiple="multiple" style="width:300px" class="populate placeholder select2-offscreen" tabindex="-1">
+         	<optgroup label="Month">
+       		<option></option>
+	        	<option value="1">January</option>
+	        	<option value="2">February</option>
+	        	<option value="3">March</option>
+	        	<option value="4">April</option>
+	        	<option value="5">May</option>
+	        	<option value="6">June</option>
+	        	<option value="7">July</option>
+	        	<option value="8">August</option>
+	        	<option value="9">September</option>
+	        	<option value="10">October</option>
+	        	<option value="11">November</option>
+	        	<option value="12">December</option>
+        	</optgroup>
+        </select>
+        <button id="goFind" class="btn btn-large btn-primary btn-block" type="submit">Find Playlist</button>
+      </form>
+      <div id ="progressStatus"></div>
+	</div>
+  </body>
+</html>
